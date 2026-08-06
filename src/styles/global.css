@@ -520,7 +520,7 @@ code {
 
   .hero-frame {
     width: 100%;
-    aspect-ratio: 2.2 / 1;
+    aspect-ratio: 3.6 / 1;
     overflow: hidden;
     border: 1px solid var(--line);
     background: #171717;
