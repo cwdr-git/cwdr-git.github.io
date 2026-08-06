@@ -1,4 +1,4 @@
-# 斗湖 Portfolio — Astro
+# 斗湖 Portfolio
 
 
 ## 포함된 페이지
