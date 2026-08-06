@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/paths';
+---
+<BaseLayout title="Project Detail Template — 斗湖">
+  <article class="project-detail section-shell">
+    <a class="back-link" href={withBase('/works/')}>← Back to Selected Works</a>
+    <header class="project-header reveal">
+      <div>
+        <p class="eyebrow">PROJECT / CATEGORY</p>
+        <h1>Project Detail Template</h1>
+        <p class="project-lead">이 페이지의 구조를 복제하지 않고 데이터만 추가하면 새로운 상세 페이지가 생성됩니다.</p>
+      </div>
+      <dl class="project-specs">
+        <div><dt>Year</dt><dd>YYYY</dd></div>
+        <div><dt>Role</dt><dd>Direction / Motion / Design</dd></div>
+        <div><dt>Tools</dt><dd>After Effects / Blender</dd></div>
+      </dl>
+    </header>
+    <div class="project-hero template-placeholder reveal"><span>16:9 HERO VIDEO OR IMAGE</span></div>
+    <section class="project-story reveal">
+      <div><p class="eyebrow">OVERVIEW</p><h2>한 문장으로 프로젝트의 핵심을 설명합니다.</h2></div>
+      <div class="prose"><p>프로젝트의 배경과 목표, 맡은 역할, 결과를 짧은 문단으로 작성합니다.</p><p>실제 콘텐츠는 <code>src/data/portfolioData.ts</code>의 프로젝트 항목에서 수정합니다.</p></div>
+    </section>
+    <section class="project-process reveal">
+      <p class="eyebrow">PROCESS</p>
+      <ol><li><span>01</span><p>Research / Concept</p></li><li><span>02</span><p>Design / Production</p></li><li><span>03</span><p>Final / Delivery</p></li></ol>
+    </section>
+  </article>
+</BaseLayout>

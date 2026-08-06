@@ -1,0 +1,57 @@
+---
+import Header from '../components/Header.astro';
+import ContactFooter from '../components/ContactFooter.astro';
+import '../styles/global.css';
+import { assetPath } from '../lib/paths';
+import { site } from '../data/portfolioData';
+
+interface Props {
+  title?: string;
+  description?: string;
+  showFooter?: boolean;
+}
+const {
+  title = `${site.brand} — Motion Designer`,
+  description = site.intro,
+  showFooter = true
+} = Astro.props;
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#080a0b" />
+    <link rel="icon" type="image/png" href={assetPath('/images/favicon.png')} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={assetPath('/images/og-image.jpg')} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    {showFooter && <ContactFooter />}
+    <script is:inline>
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+      } else {
+        document.querySelectorAll('.reveal').forEach((element) => element.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

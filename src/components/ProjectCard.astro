@@ -1,0 +1,71 @@
+---
+import type { Project } from '../data/portfolioData';
+import { assetPath, withBase } from '../lib/paths';
+
+interface Props {
+  project: Project;
+  index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+const number = String(index + 1).padStart(2, '0');
+
+/* language가 없으면 한국어로 처리 */
+const language = project.language ?? 'ko';
+---
+
+<article
+  class="project-card reveal"
+  data-category={project.category}
+  data-language={language}
+>
+  <a
+    class="project-media"
+    href={withBase(`/works/${project.slug}/`)}
+    aria-label={`${project.title} 프로젝트 보기`}
+  >
+    <img
+      src={assetPath(project.thumbnail)}
+      alt={`${project.title} thumbnail`}
+      width="1600"
+      height="900"
+      loading="lazy"
+    />
+  </a>
+
+  <div class="project-meta">
+    <span class="project-number">{number}</span>
+
+    <div>
+      <h3 lang={language}>
+        <a href={withBase(`/works/${project.slug}/`)}>
+          {project.title}
+        </a>
+      </h3>
+
+      {
+        project.subtitle && (
+          <p
+            class="project-subtitle"
+            lang={language}
+          >
+            {project.subtitle}
+          </p>
+        )
+      }
+
+      <p class="project-category">
+        {project.category}
+        {project.year ? ` · ${project.year}` : ''}
+      </p>
+    </div>
+
+    <a
+      class="arrow-link"
+      href={withBase(`/works/${project.slug}/`)}
+      aria-label={`${project.title} 열기`}
+    >
+      →
+    </a>
+  </div>
+</article>

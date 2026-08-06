@@ -1,0 +1,28 @@
+---
+import { site } from '../data/portfolioData';
+import { assetPath, withBase } from '../lib/paths';
+---
+<section class="hero section-shell" aria-labelledby="hero-title">
+  <div class="hero-frame reveal">
+    <img
+      src={assetPath(site.heroBanner)}
+      alt="斗湖 CROWNSHREDDER portfolio banner"
+      width="2048"
+      height="1152"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+
+  <div class="hero-intro reveal">
+    <div>
+      <p class="eyebrow">INTRO / 001</p>
+      <h1 class="intro-brand" aria-label={site.brand}>
+       <span class="intro-brand__mark">{site.brandMark}</span>
+       <span class="intro-brand__divider" aria-hidden="true">/</span>
+        <span class="intro-brand__name">{site.brandName}</span>
+      </h1>
+      <p class="hero-role">{site.role}<br />{site.descriptor}</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+---
+import { site } from '../data/portfolioData';
+import { withBase } from '../lib/paths';
+---
+<footer class="site-footer">
+  <div class="footer-main shell">
+    <div>
+      <p class="eyebrow">CONNECT</p>
+      <h2>Open for new projects.</h2>
+    </div>
+    <div class="footer-contact">
+      <span>Email</span>
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+    <div class="footer-contact">
+      <span>Archive</span>
+      <a href={site.social.youtube} target="_blank" rel="noreferrer">YouTube ↗</a>
+      <a href={site.social.vimeo} target="_blank" rel="noreferrer">Vimeo ↗</a>
+    </div>
+    <a class="button-link" href={withBase('/contact/')}>Contact <span>→</span></a>
+  </div>
+  <div class="footer-bottom shell">
+    <p>© {new Date().getFullYear()} CROWNSHREDDER.</p>
+    <p></p>
+  </div>
+</footer>

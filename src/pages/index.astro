@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroBanner from '../components/HeroBanner.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import AboutPreview from '../components/AboutPreview.astro';
+import { projects } from '../data/portfolioData';
+import { withBase } from '../lib/paths';
+
+/* 일반 Works 중 featured가 true인 항목 */
+const featuredWorks = projects
+  .filter(
+    (project) =>
+      project.featured &&
+      project.section !== 'mads'
+  )
+  .slice(0, 3);
+
+/* MADs 중 featured가 true인 항목 */
+const featuredMads = projects
+  .filter(
+    (project) =>
+      project.featured &&
+      project.section === 'mads'
+  )
+  .slice(0, 3);
+---
+
+<BaseLayout>
+    <HeroBanner />
+
+  <section class="works-preview section-shell">
+    <SectionHeading
+      eyebrow="SELECTED WORKS / 002"
+      title="Works, Projects and Outputs."
+      linkLabel="View all works"
+      linkHref="/works/"
+    />
+
+    <ProjectGrid projects={featuredWorks} />
+  </section>
+
+  {
+    featuredMads.length > 0 && (
+      <section class="mads-preview section-shell">
+        <SectionHeading
+          eyebrow="MADs / 003"
+          title="MADs, Remixes and Experimental Edits."
+          linkLabel="View all MADs"
+          linkHref="/works/#mads"
+        />
+
+        <ProjectGrid projects={featuredMads} />
+      </section>
+    )
+  }
+
+
+  {
+    import.meta.env.DEV && (
+      <section class="template-preview section-shell reveal">
+        <div class="template-copy">
+          <p class="eyebrow">PROJECT DETAIL TEMPLATE / 003</p>
+
+          <h2>A repeatable structure for each case study.</h2>
+
+          <p>
+            영상, 개요, 역할, 사용 도구, 제작 과정과 크레딧을
+            한 템플릿에서 관리합니다.
+          </p>
+
+          <a
+            class="button-link"
+            href={withBase('/works/project-template/')}
+          >
+            Preview Template
+            <span>→</span>
+          </a>
+        </div>
+
+        <div class="template-window" aria-hidden="true">
+          <div class="template-window__bar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="template-window__body">
+            <div>
+              <small>PROJECT / CATEGORY</small>
+              <strong>PROJECT TITLE</strong>
+              <p>Overview · Role · Tools · Process · Credits</p>
+            </div>
+
+            <div class="template-window__media"></div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <AboutPreview />
+</BaseLayout>

@@ -1,0 +1,25 @@
+---
+import { site, tools } from '../data/portfolioData';
+import { assetPath, withBase } from '../lib/paths';
+---
+<section class="about-preview section-shell reveal">
+  <div class="about-copy">
+    <p class="eyebrow">ABOUT / EXPERIENCE</p>
+    <h2>Crafting Motion, <br />Shaping Visual Identity.</h2>
+    <p>
+      기획부터 연출까지, 감각적인 BGA · PV · 이벤트 비주얼과 그래픽 디자인을 만듭니다.
+    </p>
+    <a class="button-link" href={withBase('/about/')}>View Experience <span>→</span></a>
+  </div>
+
+  <div class="about-image">
+    <img src={assetPath(site.profileImage)} alt="斗湖 CROWNSHREDDER profile graphic" width="1280" height="1280" loading="lazy" />
+  </div>
+
+  <dl class="about-facts">
+    <div><dt>Name</dt><dd>{site.personName}</dd></div>
+    <div><dt>Role</dt><dd>{site.role}</dd></div>
+    <div><dt>Specialty</dt><dd>BGA / PV / Motion / Design</dd></div>
+    <div><dt>Tools</dt><dd>{tools.join(', ')}</dd></div>
+  </dl>
+</section>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/portfolioData';
+---
+<BaseLayout title="Contact — 斗湖" showFooter={false}>
+  <section class="contact-page section-shell reveal">
+    <p class="eyebrow">CONTACT</p>
+    <h1>Seriously, send your projects.<br />I don't bite. :D</h1>
+    <p class="contact-guidance">프로젝트 종류, 예상 일정, 요구 사항 등을 포함해 메일로 보내주세요.</p>
+    <a class="contact-email" href={`mailto:${site.email}`}>{site.email}<span>↗</span></a>
+    <div class="contact-links">
+      <a href={site.social.youtube} target="_blank" rel="noreferrer">YouTube ↗</a>
+      {site.social.x && <a href={site.social.x} target="_blank" rel="noreferrer">X ↗</a>}
+      {site.social.discord && <a href={site.social.discord} target="_blank" rel="noreferrer">Discord ↗</a>}
+      {site.social.vimeo && <a href={site.social.vimeo} target="_blank" rel="noreferrer">Vimeo ↗</a>}
+    </div>
+    <p class="contact-copyright">© {new Date().getFullYear()} CROWNSHREDDER.</p>
+  </section>
+</BaseLayout>

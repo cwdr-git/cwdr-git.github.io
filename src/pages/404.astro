@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/paths';
+---
+<BaseLayout title="404 — 斗湖">
+  <section class="error-page section-shell">
+    <p class="eyebrow">ERROR / 404</p>
+    <h1>Page not found.</h1>
+    <a class="button-link" href={withBase('/')}>Return Home <span>→</span></a>
+  </section>
+</BaseLayout>

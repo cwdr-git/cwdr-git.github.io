@@ -1,0 +1,14 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import type { Project } from '../data/portfolioData';
+
+interface Props {
+  projects: Project[];
+  filtered?: boolean;
+}
+
+const { projects, filtered = false } = Astro.props;
+---
+<div class:list={['project-grid', { 'project-grid--filtered': filtered }]} data-project-grid={filtered ? '' : undefined}>
+  {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+</div>

@@ -1,0 +1,75 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+import type { Project } from '../data/portfolioData';
+import { projects } from '../data/portfolioData';
+import { withBase } from '../lib/paths';
+
+interface Props { project: Project; }
+const { project } = Astro.props;
+const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+const previous = currentIndex > 0 ? projects[currentIndex - 1] : projects[projects.length - 1];
+const next = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : projects[0];
+---
+<BaseLayout title={`${project.title} — 斗湖`} description={project.summary}>
+  <article class="project-detail section-shell">
+    <a class="back-link" href={withBase('/works/')}>← Back to Selected Works</a>
+
+    <header class="project-header reveal">
+      <div>
+        <p class="eyebrow">PROJECT / {project.category}</p>
+        <h1>{project.title}</h1>
+        {project.subtitle && <p class="project-lead">{project.subtitle}</p>}
+      </div>
+      <dl class="project-specs">
+        {project.year && <div><dt>Year</dt><dd>{project.year}</dd></div>}
+        <div><dt>Role</dt><dd>{project.roles.join(' / ')}</dd></div>
+        <div><dt>Tools</dt><dd>{project.tools.join(' / ')}</dd></div>
+      </dl>
+    </header>
+
+    <div class="project-hero reveal">
+      <VideoEmbed url={project.videoUrl} title={project.title} fallbackImage={project.thumbnail} />
+    </div>
+
+    <section class="project-story reveal">
+      <div>
+        <p class="eyebrow">OVERVIEW</p>
+        <h2>{project.summary}</h2>
+      </div>
+      <div class="prose">
+        {project.overview.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+
+    {project.process && (
+      <section class="project-process reveal">
+        <p class="eyebrow">PROCESS</p>
+        <ol>
+          {project.process.map((step, index) => (
+            <li><span>{String(index + 1).padStart(2, '0')}</span><p>{step}</p></li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {(project.credits || project.externalUrl) && (
+      <section class="project-links reveal">
+        <p class="eyebrow">CREDITS / LINKS</p>
+        {project.credits && <ul>{project.credits.map((item) => <li>{item}</li>)}</ul>}
+        {project.externalUrl && <a class="button-link" href={project.externalUrl} target="_blank" rel="noreferrer">External Link <span>↗</span></a>}
+      </section>
+    )}
+
+    <nav class="project-pagination" aria-label="Project navigation">
+      <a href={withBase(`/works/${previous.slug}/`)}>
+        <span>Previous</span>
+        <strong>← {previous.title}</strong>
+      </a>
+      <a href={withBase(`/works/${next.slug}/`)}>
+        <span>Next</span>
+        <strong>{next.title} →</strong>
+      </a>
+    </nav>
+  </article>
+</BaseLayout>

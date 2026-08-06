@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import {
+  filterCategories,
+  projects
+} from '../../data/portfolioData';
+
+/* section이 mads가 아닌 프로젝트는 기존 Works 영역에 표시 */
+const workProjects = projects.filter(
+  (project) => project.section !== 'mads'
+);
+
+/* section이 mads인 프로젝트만 별도 MADs 영역에 표시 */
+const madProjects = projects.filter(
+  (project) => project.section === 'mads'
+);
+---
+
+<BaseLayout
+  title="Selected Works — 斗湖"
+  description="BGA, PV, motion graphics, identity, poster, event direction and MAD projects."
+>
+  <section class="page-intro section-shell reveal">
+    <p class="eyebrow">SELECTED WORKS</p>
+    <h1>Works, Projects and Outputs.</h1>
+  </section>
+
+  <!-- 기존 Works 영역 -->
+  <section class="works-page section-shell">
+    <div
+      class="filter-bar"
+      aria-label="Project filters"
+    >
+      {
+        filterCategories.map((category, index) => (
+          <button
+            class:list={{ active: index === 0 }}
+            type="button"
+            data-work-filter={category}
+          >
+            {category}
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- 필터가 Works 카드에만 적용되도록 별도 영역으로 감쌈 -->
+    <div id="works-grid">
+      <ProjectGrid
+        projects={workProjects}
+        filtered
+      />
+    </div>
+  </section>
+ 
+  <section class="page-intro section-shell reveal">
+    <p class="eyebrow">MADs</p>
+    <h1>MADs, Remixes and Experimental Edits.</h1>
+  </section>
+  <!-- 별도 MADs 영역 -->
+  {
+    madProjects.length > 0 && (
+      <section
+        id="mads"
+        class="mads-page section-shell"
+      >
+
+      <ProjectGrid
+        projects={madProjects}
+       filtered
+      />
+      </section>
+    )
+  }
+
+  <script>
+    const buttons = document.querySelectorAll(
+      '[data-work-filter]'
+    );
+
+    const worksGrid = document.querySelector(
+      '#works-grid'
+    );
+
+    const cards = worksGrid
+      ? worksGrid.querySelectorAll('.project-card')
+      : [];
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute(
+          'data-work-filter'
+        );
+
+        buttons.forEach((item) => {
+          item.classList.toggle(
+            'active',
+            item === button
+          );
+        });
+
+        cards.forEach((card) => {
+          const category = card.getAttribute(
+            'data-category'
+          );
+
+          const matches =
+            filter === 'All' ||
+            category === filter;
+
+          card.toggleAttribute(
+            'hidden',
+            !matches
+          );
+        });
+      });
+    });
+  </script>
+</BaseLayout>

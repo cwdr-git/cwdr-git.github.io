@@ -1,0 +1,50 @@
+---
+import { site } from '../data/portfolioData';
+import { withBase } from '../lib/paths';
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => {
+  const resolved = withBase(href);
+  if (href === '/') return currentPath === resolved || currentPath === `${resolved}/`;
+  return currentPath.startsWith(resolved.replace(/\/$/, ''));
+};
+---
+<header class="site-header" data-header>
+  <div class="header-inner shell">
+    <a class="brand" href={withBase('/')} aria-label="CROWNSHREDDER home">
+      <span class="brand-mark">{site.brandMark}</span>
+      <span class="brand-divider">/</span>
+      <span class="brand-name">{site.brandName}</span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <span></span><span></span>
+      <span class="sr-only">메뉴 열기</span>
+    </button>
+
+    <nav id="primary-nav" class="primary-nav" aria-label="Primary navigation">
+      {site.nav.map((item) => (
+        <a class:list={{ active: isActive(item.href) }} href={withBase(item.href)}>{item.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  const button = header?.querySelector('.menu-toggle');
+  const nav = header?.querySelector('.primary-nav');
+
+  button?.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('open', !open);
+  });
+
+  nav?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      button?.setAttribute('aria-expanded', 'false');
+      nav?.classList.remove('open');
+    });
+  });
+</script>
