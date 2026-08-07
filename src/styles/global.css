@@ -502,7 +502,7 @@ code {
 
   .primary-nav a {
     padding: 17px var(--gutter);
-    border-top: 1px solid var(--line);
+    border-top: 0;
   }
 
   .primary-nav a::after {
@@ -531,7 +531,7 @@ code {
     height: 100%;
     aspect-ratio: auto;
     object-fit: cover;
-    object-position: center 52%;
+    object-position: center center;
   }
 
   .hero-intro {
