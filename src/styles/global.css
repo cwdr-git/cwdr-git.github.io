@@ -512,6 +512,10 @@ code {
   .menu-toggle {
     display: block;
   }
+ 
+  .site-header {
+    border-bottom: 0;
+  }
 
   .hero {
     width: 100%;
