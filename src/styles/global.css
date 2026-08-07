@@ -522,7 +522,7 @@ code {
     width: 100%;
     aspect-ratio: 3.6 / 1;
     overflow: hidden;
-    border: 1px solid var(--line);
+    border: 0;
     background: #171717;
   }
 
@@ -535,7 +535,7 @@ code {
   }
 
   .hero-intro {
-    border-inline: 0;
+    border-inline: 1px solid var(--line);
   }
 
   .hero-intro > div {
