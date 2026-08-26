@@ -38,6 +38,12 @@ export const site = {
   role: 'Motion Designer',
   descriptor: 'BGA · PV · Motion Graphics · Visual Identity',
   heroBanner: '/images/hero-banner.png',
+  // Homepage intro stage. Put the real MP4 at public/videos/intro-showreel.mp4
+  // or change this path to the filename you prefer.
+  introVideo: '/videos/intro-showreel.mp4',
+  introTitle: '2024 - 2026 SHOWREEL',
+  introKicker: 'MOTION DESIGN / BGA / PV',
+  introTools: 'AE / BLENDER / ILLUSTRATOR',
   profileImage: '/images/profile-image.png',
   email: 'eternitykim98@gmail.com',
   social: {
@@ -105,7 +111,7 @@ export const projects: Project[] = [
     subtitle: '操リ人形ノ舞ニ意味ハ有ルカ · Awakening Pulse · Sudden Encounter',
     year: '2025',
     category: 'BGA / PV',
-    thumbnail: '/images/projects/bof21.webp',
+    thumbnail: '/images/projects/bof21.png',
     featured: true,
     summary: 'THE BMS OF FIGHTERS 21 -GO BACK 2 YOUR ROOTS-',
     overview: [
@@ -121,22 +127,6 @@ export const projects: Project[] = [
       'Awakening Pulse — https://youtu.be/UA7ZTSeJXb0',
       'Sudden Encounter — https://youtu.be/839BVvgRguE'
     ]
-  },
-  {
-    slug: 'killzone',
-    title: 'K1LLZ0NE',
-    year: '2024',
-    category: 'BGA / PV',
-    thumbnail: '/images/projects/killzone.jpg',
-    featured: true,
-    summary: '自称無名BMS作家が物申す!2024',
-    overview: [
-      '이전부터 제작해 보고 싶었던 음악 게임 수록곡의 BGA 제작에 도전하기 위해 “무명전 2024”에 제출한 작품입니다.',
-      '중세 시대를 연상시키는 분위기의 사운드에 맞춰 클래식한 디자인의 오브젝트를 배치했으며, 곡 제목인 “KILLZONE”을 표현하기 위해 공간감을 중점적으로 고려했습니다.'
-    ],
-    roles: ['Concept', 'Motion Design', 'Editing'],
-    tools: ['Adobe After Effects', 'Blender'],
-    videoUrl: 'https://vimeo.com/1124246251',
   },
   {
     slug: 'sorimad-festival',
@@ -207,6 +197,22 @@ export const projects: Project[] = [
     tools: ['Adobe After Effects', 'Blender', 'Adobe Illustrator'],
     videoUrl: 'https://vimeo.com/1215939041',
     externalUrl: 'https://x.com/sorimix_'
+  },
+  {
+    slug: 'killzone',
+    title: 'K1LLZ0NE',
+    year: '2024',
+    category: 'BGA / PV',
+    thumbnail: '/images/projects/killzone.jpg',
+    featured: true,
+    summary: '自称無名BMS作家が物申す!2024',
+    overview: [
+      '이전부터 제작해 보고 싶었던 음악 게임 수록곡의 BGA 제작에 도전하기 위해 “무명전 2024”에 제출한 작품입니다.',
+      '중세 시대를 연상시키는 분위기의 사운드에 맞춰 클래식한 디자인의 오브젝트를 배치했으며, 곡 제목인 “KILLZONE”을 표현하기 위해 공간감을 중점적으로 고려했습니다.'
+    ],
+    roles: ['Concept', 'Motion Design', 'Editing'],
+    tools: ['Adobe After Effects', 'Blender'],
+    videoUrl: 'https://vimeo.com/1124246251',
   },
   {
     slug: 'studio_visualcast',

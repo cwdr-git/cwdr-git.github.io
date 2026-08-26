@@ -17,34 +17,75 @@ const isActive = (href: string) => {
       <span class="brand-name">{site.brandName}</span>
     </a>
 
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
-      <span></span><span></span>
-      <span class="sr-only">메뉴 열기</span>
+    <button
+      class="header-menu-trigger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-drawer"
+      data-menu-open
+    >
+      <span class="header-menu-trigger__label">MENU</span>
+      <span class="header-menu-trigger__icon" aria-hidden="true">
+        <i></i>
+        <i></i>
+      </span>
     </button>
-
-    <nav id="primary-nav" class="primary-nav" aria-label="Primary navigation">
-      {site.nav.map((item) => (
-        <a class:list={{ active: isActive(item.href) }} href={withBase(item.href)}>{item.label}</a>
-      ))}
-    </nav>
   </div>
 </header>
 
+<div class="site-drawer-backdrop" data-menu-close aria-hidden="true"></div>
+
+<aside class="site-drawer" id="site-drawer" aria-hidden="true" aria-label="Site menu">
+  <div class="site-drawer__top">
+    <span>DIRECTORY</span>
+    <button class="site-drawer__close" type="button" data-menu-close>
+      CLOSE <span aria-hidden="true">×</span>
+    </button>
+  </div>
+
+  <nav class="site-drawer__nav" aria-label="Primary navigation">
+    {site.nav.map((item, index) => (
+      <a class:list={{ active: isActive(item.href) }} href={withBase(item.href)} data-drawer-link>
+        <span>{String(index + 1).padStart(2, '0')}</span>
+        <strong>{item.label}</strong>
+      </a>
+    ))}
+  </nav>
+
+  <div class="site-drawer__bottom">
+    <span>{site.role}</span>
+    <span>CWDR / 2026</span>
+  </div>
+</aside>
+
 <script>
-  const header = document.querySelector('[data-header]');
-  const button = header?.querySelector('.menu-toggle');
-  const nav = header?.querySelector('.primary-nav');
+  const openButton = document.querySelector('[data-menu-open]');
+  const drawer = document.querySelector('.site-drawer');
+  const backdrop = document.querySelector('.site-drawer-backdrop');
+  const closeTargets = document.querySelectorAll('[data-menu-close]');
+  const drawerLinks = document.querySelectorAll('[data-drawer-link]');
 
-  button?.addEventListener('click', () => {
-    const open = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!open));
-    nav?.classList.toggle('open', !open);
+  const openMenu = () => {
+    document.body.classList.add('drawer-open');
+    openButton?.setAttribute('aria-expanded', 'true');
+    drawer?.setAttribute('aria-hidden', 'false');
+  };
+
+  const closeMenu = () => {
+    document.body.classList.remove('drawer-open');
+    openButton?.setAttribute('aria-expanded', 'false');
+    drawer?.setAttribute('aria-hidden', 'true');
+  };
+
+  openButton?.addEventListener('click', openMenu);
+  closeTargets.forEach((target) => target.addEventListener('click', closeMenu));
+  drawerLinks.forEach((link) => link.addEventListener('click', closeMenu));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && document.body.classList.contains('drawer-open')) {
+      closeMenu();
+    }
   });
 
-  nav?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      button?.setAttribute('aria-expanded', 'false');
-      nav?.classList.remove('open');
-    });
-  });
+  backdrop?.addEventListener('click', closeMenu);
 </script>

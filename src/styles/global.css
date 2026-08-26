@@ -229,8 +229,26 @@ code {
 
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-bottom: 44px; }
 .section-heading h2 { max-width: 830px; margin: 0; font-family: var(--condensed); font-size: clamp(34px, 4.5vw, 66px); line-height: 1.05; letter-spacing: -.035em; }
-.text-link { flex: 0 0 auto; padding-bottom: 6px; border-bottom: 1px solid var(--line); font-size: 13px; }
-.text-link span { color: var(--accent); margin-left: 6px; }
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+
+  flex: 0 0 auto;
+
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--line);
+
+  font-size: 13px;
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+.text-link span {
+  color: var(--accent);
+  margin-left: 6px;
+}
 
 .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .project-card { min-width: 0; border: 1px solid var(--line); background: var(--bg-soft); }
@@ -385,7 +403,26 @@ code {
   object-fit: contain;
 }
 .about-page__bio h2 { margin: 0 0 34px; font-family: var(--condensed); font-size: clamp(38px, 4.5vw, 64px); line-height: .94; letter-spacing: -.05em; }
-.about-page__bio > p:not(.eyebrow) { max-width: 700px; color: #c0c7ca; font-size: clamp(16px, 1.5vw, 20px); }
+.about-page__bio > p:not(.eyebrow) {
+  max-width: 700px;
+  margin: 0;
+
+  color: #c0c7ca;
+  font-size: clamp(12px, 1.2vw, 16px);
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+
+/* 자기소개 첫 문장 위쪽만 띄우기 */
+.about-page__bio > dl + p:not(.eyebrow) {
+  margin-top: 24px;
+}
+
+/* 자기소개 문단끼리의 간격 */
+.about-page__bio > p:not(.eyebrow) + p:not(.eyebrow) {
+  margin-top: 5px;
+}
+
 .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-block: 1px solid var(--line); }
 .skills > div { padding: clamp(34px, 5vw, 70px); border: 1px solid var(--line); background: var(--bg-soft); }
 .skills ul { margin: 0; padding: 0; list-style: none; }
@@ -634,4 +671,965 @@ code {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { opacity: 1; transform: none; }
+}
+
+/* =========================================================
+   FULLSCREEN INTRO STAGE
+   ---------------------------------------------------------
+   Homepage-only cinematic first viewport. The background is
+   a muted looping MP4; poster falls back to site.heroBanner.
+   ========================================================= */
+.intro-stage {
+  position: relative;
+  width: 100%;
+  height: calc(100svh - var(--header-h));
+  min-height: 620px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #030405;
+  border-bottom: 1px solid var(--line);
+}
+
+.intro-stage__media {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  background: #050607;
+}
+
+.intro-stage__media::after {
+  content: "";
+
+  position: absolute;
+  z-index: 3;
+
+  /*
+   * 움직일 때 가장자리가 드러나지 않도록
+   * 화면보다 훨씬 크게 만든다.
+   */
+  inset: -30%;
+
+  pointer-events: none;
+
+  opacity: .10;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+
+  background-repeat: repeat;
+  background-size: 140px 140px;
+
+  mix-blend-mode: soft-light;
+
+  animation: intro-grain .14s steps(2, end) infinite;
+
+  will-change: transform;
+}
+
+@keyframes intro-grain {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  20% {
+    transform: translate(-3%, 2%);
+  }
+
+  40% {
+    transform: translate(2%, -4%);
+  }
+
+  60% {
+    transform: translate(4%, 4%);
+  }
+
+  80% {
+    transform: translate(-4%, -2%);
+  }
+
+  100% {
+    transform: translate(2%, 3%);
+  }
+}
+
+.intro-stage__veil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.intro-stage__video {
+  position: absolute;
+  z-index: 0;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: center center;
+
+  background: #050607;
+
+  filter:
+    blur(1.5px)
+    brightness(.85)
+    contrast(1.06);
+
+  /*
+   * blur 때문에 가장자리가 비쳐 보이는 것을 방지
+   */
+  transform: scale(1.015);
+  transform-origin: center center;
+}
+
+.intro-stage__veil {
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, .80) 0%, rgba(0, 0, 0, .14) 18%, rgba(0, 0, 0, .08) 58%, rgba(0, 0, 0, .78) 100%),
+    linear-gradient(to right, rgba(0, 0, 0, .22), transparent 28%, transparent 72%, rgba(0, 0, 0, .18));
+}
+
+.intro-stage__title-block {
+  position: absolute;
+  z-index: 3;
+  top: clamp(58px, 8.2vh, 88px);
+  left: var(--gutter);
+  max-width: min(560px, 50vw);
+}
+
+.intro-stage__title-block h1 {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-en);
+  font-size: clamp(13px, 1.15vw, 18px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+
+.intro-stage__centerpiece {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(160px, 18vw, 310px);
+  pointer-events: none;
+}
+
+.intro-stage__logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 42vh;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 35px rgba(0, 0, 0, .22));
+}
+
+.intro-stage__section-label {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: var(--gutter);
+  margin: 0;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
+.intro-stage__brand-block {
+  position: absolute;
+  z-index: 3;
+  left: var(--gutter);
+  bottom: clamp(26px, 4.5vh, 52px);
+  max-width: min(760px, 68vw);
+}
+
+.intro-stage__brand-block p,
+.intro-stage__tools {
+  margin: 0;
+  color: rgba(242, 244, 244, .9);
+  font-family: var(--font-en);
+  font-size: clamp(9px, .72vw, 12px);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.intro-stage__brand-block strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--text);
+  font-family: var(--font-en);
+  font-size: clamp(34px, 4.8vw, 78px);
+  font-weight: 800;
+  line-height: .86;
+  letter-spacing: -.055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.intro-stage__tools {
+  position: absolute;
+  z-index: 3;
+  right: var(--gutter);
+  bottom: clamp(30px, 4.7vh, 54px);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.intro-stage__marker {
+  position: absolute;
+  z-index: 3;
+  width: 16px;
+  height: auto;
+  opacity: .72;
+  pointer-events: none;
+}
+
+.intro-stage__marker--top-left { top: 22px; left: var(--gutter); }
+.intro-stage__marker--top-center { top: 22px; left: 50%; transform: translateX(-50%); }
+.intro-stage__marker--top-right { top: 22px; right: var(--gutter); }
+.intro-stage__marker--middle-left { top: 50%; left: var(--gutter); transform: translateY(-50%); }
+.intro-stage__marker--middle-right {display: none;}
+.intro-stage__marker--bottom-left { bottom: 22px; left: var(--gutter); }
+.intro-stage__marker--bottom-center { bottom: 22px; left: 50%; transform: translateX(-50%); }
+.intro-stage__marker--bottom-right { bottom: 22px; right: var(--gutter); }
+
+/* The top-left marker shares space with the title block in the mockup.
+   Shift the content marker slightly upward/left while the title stays readable. */
+.intro-stage__marker--top-left { transform: translateY(-2px); }
+
+/* =========================================================
+   HEADER MENU + RIGHT DRAWER
+   ========================================================= */
+.header-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  min-height: 42px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.header-menu-trigger__label {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.header-menu-trigger__icon {
+  display: inline-flex;
+  width: 18px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-menu-trigger__icon i {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transition: transform .25s ease;
+}
+
+.site-drawer-backdrop {
+  position: fixed;
+  z-index: 80;
+  inset: 0;
+  background: rgba(0, 0, 0, .58);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+
+.site-drawer {
+  position: fixed;
+  z-index: 90;
+  top: 0;
+  right: 0;
+  width: min(620px, 88vw);
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3.5vw, 48px);
+  border-left: 1px solid var(--line);
+  background: #080a0b;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform .52s cubic-bezier(.76, 0, .24, 1), visibility .52s ease;
+}
+
+body.drawer-open { overflow: hidden; }
+body.drawer-open .site-drawer-backdrop {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+body.drawer-open .site-drawer {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.site-drawer__top,
+.site-drawer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: var(--muted);
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.site-drawer__close {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+
+.site-drawer__nav {
+  margin-block: 36px auto;
+  border-top: 1px solid var(--line);
+}
+
+.site-drawer__nav a {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  padding: clamp(18px, 3vh, 28px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-drawer__nav a > span {
+  padding-top: 7px;
+  color: var(--accent);
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.site-drawer__nav strong {
+  font-family: var(--font-en);
+  font-size: clamp(28px, 3.4vw, 50px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  text-transform: none;
+  transition: color .2s ease, transform .25s ease;
+}
+
+.site-drawer__nav a:hover strong,
+.site-drawer__nav a.active strong { color: var(--accent); }
+.site-drawer__nav a:hover strong { transform: translateX(6px); }
+
+@media (max-width: 760px) {
+  .header-menu-trigger__label { font-size: 9px; }
+
+  .intro-stage {
+    height: calc(100svh - var(--header-h));
+    min-height: 560px;
+  }
+
+  .intro-stage__veil {
+    background:
+      linear-gradient(to bottom, rgba(0, 0, 0, .92) 0%, rgba(0, 0, 0, .32) 18%, rgba(0, 0, 0, .10) 50%, rgba(0, 0, 0, .42) 78%, rgba(0, 0, 0, .94) 100%);
+  }
+
+  .intro-stage__title-block {
+    top: 56px;
+    max-width: calc(100% - (var(--gutter) * 2));
+  }
+
+  .intro-stage__title-block h1 {
+    font-size: 12px;
+    letter-spacing: .045em;
+  }
+
+  .intro-stage__centerpiece {
+    top: 49%;
+    width: clamp(135px, 31vw, 220px);
+  }
+
+  .intro-stage__section-label {
+    top: 50%;
+    right: 18px;
+    font-size: 9px;
+    letter-spacing: .15em;
+  }
+
+  .intro-stage__section-label::before {
+    width: 18px;
+    margin-right: 8px;
+  }
+
+  .intro-stage__brand-block {
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 32px;
+    max-width: none;
+  }
+
+  .intro-stage__brand-block strong {
+    font-size: clamp(28px, 8.7vw, 48px);
+    white-space: normal;
+  }
+
+  .intro-stage__tools {
+    right: var(--gutter);
+    bottom: 32px;
+    font-size: 8px;
+  }
+
+  .intro-stage__brand-block p { font-size: 8px; }
+
+  .intro-stage__marker { width: 12px; }
+  .intro-stage__marker--top-left,
+  .intro-stage__marker--top-center,
+  .intro-stage__marker--top-right { top: 14px; }
+  .intro-stage__marker--bottom-left,
+  .intro-stage__marker--bottom-center,
+  .intro-stage__marker--bottom-right { bottom: 14px; }
+
+  .site-drawer {
+    width: 100%;
+    padding: 24px var(--gutter) 28px;
+  }
+
+  .site-drawer__nav strong {
+    font-size: clamp(30px, 10vw, 48px);
+  }
+  
+  .about-experience-link {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 8px;
+  }
+}
+
+@media (max-width: 560px) {
+  .intro-stage__tools {
+    bottom: 18px;
+  }
+
+  .intro-stage__brand-block {
+    bottom: 54px;
+  }
+
+  .intro-stage__marker--middle-right {
+    right: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-stage__video { display: none; }
+  .site-drawer,
+  .site-drawer-backdrop,
+  .site-drawer__nav strong { transition: none; }
+}
+.home-works-showcase {
+  --home-works-width: 1120px;
+}
+
+.home-works-showcase__head,
+.home-works-stack {
+  width: min(100%, var(--home-works-width));
+  margin-inline: auto;
+}
+
+.home-works-showcase__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(32px, 7vw, 120px);
+  margin-bottom: clamp(24px, 3vw, 44px);
+}
+
+.home-works-showcase__head h2 {
+  margin: 0;
+  font-family: var(--condensed);
+  font-size: clamp(48px, 5.5vw, 78px);
+  font-weight: 700;
+  line-height: .94;
+  letter-spacing: -.045em;
+}
+
+.home-works-showcase__links {
+  min-width: 210px;
+  padding-top: 0;
+  text-align: right;
+  align-self: end;
+}
+
+.home-works-showcase__eyebrow {
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+.home-works-showcase__links .text-link {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-size: 11px;
+}
+
+/* 카드끼리 붙지 않도록 실제 gap을 사용 */
+.home-works-stack {
+  display: grid;
+  gap: clamp(16px, 1.6vw, 24px);
+  background: transparent;
+}
+
+.home-work-strip {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4.2 / 1;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .08);
+  background: var(--panel);
+}
+
+.home-work-strip img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.001);
+  transition:
+    transform .7s cubic-bezier(.2, .7, .2, 1),
+    filter .35s ease;
+}
+
+/* 좌측 하단 정보가 어떤 썸네일에서도 읽히도록 하단만 부드럽게 어둡게 */
+.home-work-strip::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border: 1px solid transparent;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, .74) 0%,
+    rgba(0, 0, 0, .40) 24%,
+    rgba(0, 0, 0, .08) 48%,
+    transparent 68%
+  );
+  pointer-events: none;
+  transition: border-color .25s ease, background .25s ease;
+}
+
+.home-work-strip__info {
+  position: absolute;
+  z-index: 2;
+  left: clamp(16px, 1.7vw, 26px);
+  bottom: clamp(14px, 1.55vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  max-width: min(82%, 760px);
+  color: #fff;
+  font-family: var(--font-en);
+  pointer-events: none;
+}
+
+.home-work-strip__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  color: rgba(255, 255, 255, .84);
+  font-size: clamp(8px, .65vw, 10px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.home-work-strip__info strong {
+  color: #fff;
+  font-size: clamp(18px, 1.8vw, 28px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+
+.home-work-strip__arrow {
+  position: absolute;
+  z-index: 2;
+  right: clamp(16px, 1.7vw, 26px);
+  bottom: clamp(14px, 1.55vw, 24px);
+  color: var(--accent);
+  font-family: var(--font-en);
+  font-size: 15px;
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+}
+
+.home-work-strip:hover img,
+.home-work-strip:focus-visible img {
+  transform: scale(1.025);
+  filter: brightness(.88);
+}
+
+.home-work-strip:hover::after,
+.home-work-strip:focus-visible::after {
+  border-color: var(--accent);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, .70) 0%,
+    rgba(0, 0, 0, .30) 28%,
+    rgba(0, 0, 0, .02) 58%,
+    transparent 72%
+  );
+}
+
+.home-work-strip:hover .home-work-strip__arrow,
+.home-work-strip:focus-visible .home-work-strip__arrow {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 760px) {
+  .home-works-showcase__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: end;
+  }
+
+  .home-works-showcase__head h2 {
+    font-size: clamp(42px, 13vw, 62px);
+  }
+
+  .home-works-showcase__links {
+    min-width: 0;
+    text-align: right;
+  }
+
+  .home-works-showcase__eyebrow {
+    font-size: 8px;
+    letter-spacing: .12em;
+  }
+
+  .home-works-showcase__eyebrow::before {
+    display: none;
+  }
+
+  .home-works-showcase__links .text-link {
+    font-size: 9px;
+  }
+
+  .home-works-stack {
+    gap: 12px;
+  }
+
+  .home-work-strip {
+    aspect-ratio: 2.35 / 1;
+  }
+
+  .home-work-strip__info {
+    left: 14px;
+    right: 44px;
+    bottom: 13px;
+    max-width: none;
+  }
+
+  .home-work-strip__meta {
+    gap: 7px;
+    font-size: 8px;
+  }
+
+  .home-work-strip__info strong {
+    font-size: clamp(15px, 4.8vw, 22px);
+  }
+
+  .home-work-strip__arrow {
+    right: 14px;
+    bottom: 13px;
+    opacity: 1;
+    transform: none;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-work-strip img,
+  .home-work-strip::after,
+  .home-work-strip__arrow {
+    transition: none;
+  }
+}
+/* =========================INTRO LOADER ========================= */
+
+/*
+ * JavaScript가 로더를 실행할 때 html에 붙는 클래스.
+ * 인트로 재생 중에는 스크롤을 막는다.
+ */
+html.intro-loading,
+html.intro-loading body {
+  overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   LOADER ROOT
+   --------------------------------------------------------- */
+
+.intro-loader {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+
+  display: none;
+
+  width: 100%;
+  height: 100svh;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+/* JS가 실행될 때 이것이 붙으면 로더가 나타남 */
+.intro-loader.is-active {
+  display: block;
+  pointer-events: auto;
+}
+
+
+/* ---------------------------------------------------------
+   BLACK CURTAIN
+   --------------------------------------------------------- */
+
+/*
+ * 최종 단계에서 이 검은 판만 위로 올라간다.
+ * 로고와 로딩 UI는 별도 레이어이므로 같이 움직이지 않는다.
+ */
+.intro-loader__curtain {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: #000;
+
+  transform: translateY(0);
+
+  will-change: transform;
+}
+
+
+/* ---------------------------------------------------------
+   IMPORTING ARCHIVE + LOADING LINE
+   --------------------------------------------------------- */
+
+.intro-loader__status {
+  position: absolute;
+  z-index: 2;
+
+  left: 0;
+  bottom: clamp(36px, 6vh, 72px);
+
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  gap: 11px;
+
+  color: var(--accent);
+
+  font-family: var(--font-en);
+  font-size: 9px;
+  font-weight: 600;
+
+  line-height: 1;
+  letter-spacing: .14em;
+
+  text-transform: uppercase;
+
+  opacity: 1;
+
+  pointer-events: none;
+
+  will-change:
+    opacity,
+    transform;
+}
+
+.intro-loader__text {
+  display: block;
+
+  margin-left: var(--gutter);
+
+  color: var(--accent);
+
+  white-space: nowrap;
+}
+
+
+/*
+ * 로딩 전 상태에서는 선 자체가 보이지 않는다.
+ * 검은 배경과 완전히 같은 상태.
+ */
+.intro-loader__track {
+  position: relative;
+
+  display: block;
+
+  width: 100vw;
+  height: 1px;
+
+  overflow: hidden;
+
+  background: transparent;
+}
+
+
+/*
+ * 실제 cyan line.
+ * 화면 맨 왼쪽에서 맨 오른쪽까지 성장한다.
+ */
+.intro-loader__fill {
+  position: absolute;
+  inset: 0;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  background: var(--accent);
+
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  will-change: transform;
+}
+
+
+/* ---------------------------------------------------------
+   LOADING LOGO
+   --------------------------------------------------------- */
+
+/*
+ * 위치와 크기는 다음 단계의 JS가
+ * 실제 Home 중앙 로고를 측정해서 직접 넣어준다.
+ */
+.intro-loader__logo {
+  position: fixed;
+  z-index: 3;
+
+  display: block;
+
+  left: 0;
+  top: 0;
+
+  width: auto;
+  height: auto;
+
+  opacity: 0;
+
+  object-fit: contain;
+
+  pointer-events: none;
+
+  transform-origin: center center;
+
+  will-change:
+    left,
+    top,
+    width,
+    height,
+    opacity,
+    transform,
+    filter;
+}
+
+
+/* ---------------------------------------------------------
+   HOME LOGO HANDOFF
+   --------------------------------------------------------- */
+
+/*
+ * 로딩 연출 중에는 실제 Home 로고를 투명하게 만든다.
+ * display:none을 쓰면 JS가 크기/위치를 측정할 수 없으므로
+ * 반드시 opacity만 사용한다.
+ */
+.intro-stage--loading .intro-stage__logo {
+  opacity: 0;
+}
+
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .intro-loader__status {
+    left: 0;
+    bottom: 32px;
+
+    width: 100vw;
+
+    gap: 10px;
+
+    font-size: 8px;
+  }
+
+  .intro-loader__text {
+    margin-left: 20px;
+  }
+
+  .intro-loader__track {
+    width: 100vw;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-loader__curtain,
+  .intro-loader__status,
+  .intro-loader__fill,
+  .intro-loader__logo {
+    animation: none !important;
+    transition: none !important;
+  }
 }

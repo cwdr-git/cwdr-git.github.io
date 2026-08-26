@@ -1,0 +1,383 @@
+---
+import { site } from '../data/portfolioData';
+import { assetPath } from '../lib/paths';
+import introLogoUrl from '../assets/intro-logo.svg?url';
+import markerUrl from '../assets/intro-marker.svg?url';
+
+const markerPositions = [
+  'top-left',
+  'top-center',
+  'top-right',
+  'middle-left',
+  'middle-right',
+  'bottom-left',
+  'bottom-center',
+  'bottom-right'
+] as const;
+---
+
+<section class="intro-stage" aria-labelledby="intro-stage-title">
+  <div class="intro-stage__media" aria-hidden="true">
+    <video
+      class="intro-stage__video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster={assetPath(site.heroBanner)}
+    >
+      <source src={assetPath(site.introVideo)} type="video/mp4" />
+    </video>
+    <div class="intro-stage__veil"></div>
+  </div>
+
+  <div class="intro-stage__title-block">
+    <h1 id="intro-stage-title">{site.introTitle}</h1>
+  </div>
+
+  <div class="intro-stage__centerpiece">
+    <img
+      class="intro-stage__logo"
+      src={introLogoUrl}
+      alt={`${site.brandMark} ${site.brandName}`}
+      data-home-intro-logo
+    />
+  </div>
+
+  <p class="intro-stage__section-label eyebrow">INTRO / 001</p>
+
+  <div class="intro-stage__brand-block">
+    <p>{site.introKicker}</p>
+    <strong>{site.brandName}</strong>
+  </div>
+
+  <p class="intro-stage__tools">{site.introTools}</p>
+
+  <div class="intro-stage__markers" aria-hidden="true">
+    {markerPositions.map((position) => (
+      <img
+        class={`intro-stage__marker intro-stage__marker--${position}`}
+        src={markerUrl}
+        alt=""
+      />
+    ))}
+  </div>
+</section>
+
+<!-- ========================= SITE INTRO LOADER ========================= -->
+
+<div
+  class="intro-loader"
+  data-intro-loader
+  aria-hidden="true"
+>
+  <!-- 나중에 이것만 위로 슬라이드됨 -->
+  <div
+    class="intro-loader__curtain"
+    data-loader-curtain
+  ></div>
+
+  <!-- IMPORTING ARCHIVE... + 로딩바 -->
+  <div
+    class="intro-loader__status"
+    data-loader-status
+  >
+    <span class="intro-loader__text">
+      IMPORTING ARCHIVE...
+    </span>
+
+    <span class="intro-loader__track">
+      <span
+        class="intro-loader__fill"
+        data-loader-fill
+      ></span>
+    </span>
+  </div>
+
+  <!-- Home 중앙 로고와 같은 SVG -->
+  <img
+    class="intro-loader__logo"
+    src={introLogoUrl}
+    alt=""
+    data-loader-logo
+  />
+</div>
+
+<noscript>
+  <style>
+    .intro-loader {
+      display: none !important;
+    }
+  </style>
+</noscript>
+
+<script>
+  const loader = document.querySelector('[data-intro-loader]');
+  const curtain = document.querySelector('[data-loader-curtain]');
+  const status = document.querySelector('[data-loader-status]');
+  const fill = document.querySelector('[data-loader-fill]');
+  const loaderLogo = document.querySelector('[data-loader-logo]');
+  const homeLogo = document.querySelector('[data-home-intro-logo]');
+  const introStage = document.querySelector('.intro-stage');
+
+  const wait = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  };
+
+const INTRO_STORAGE_KEY = 'cwdr-intro-played';
+
+const hasPlayedIntro = () => {
+  try {
+    return sessionStorage.getItem(INTRO_STORAGE_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
+
+const rememberIntro = () => {
+  try {
+    sessionStorage.setItem(INTRO_STORAGE_KEY, '1');
+  } catch {
+    /* sessionStorage를 사용할 수 없는 환경에서는 그냥 매번 재생 */
+  }
+};
+
+  /* =====================================================
+     실제 Home 로고 위치 → Loader 로고에 복사
+     ===================================================== */
+
+  const syncLoaderLogo = () => {
+    if (!(loaderLogo instanceof HTMLElement)) return;
+    if (!(homeLogo instanceof HTMLElement)) return;
+
+    const rect = homeLogo.getBoundingClientRect();
+
+    loaderLogo.style.left = `${rect.left}px`;
+    loaderLogo.style.top = `${rect.top}px`;
+    loaderLogo.style.width = `${rect.width}px`;
+    loaderLogo.style.height = `${rect.height}px`;
+  };
+
+
+  /* =====================================================
+     INTRO 종료
+     ===================================================== */
+
+  const finishIntro = () => {
+    introStage?.classList.remove('intro-stage--loading');
+
+    if (homeLogo instanceof HTMLElement) {
+      homeLogo.style.opacity = '';
+    }
+
+    loader?.remove();
+
+    document.documentElement.classList.remove('intro-loading');
+  };
+
+
+  /* =====================================================
+     MAIN INTRO
+     ===================================================== */
+
+  const playIntro = async () => {
+    if (!(loader instanceof HTMLElement)) return;
+    if (!(curtain instanceof HTMLElement)) return;
+    if (!(status instanceof HTMLElement)) return;
+    if (!(fill instanceof HTMLElement)) return;
+    if (!(loaderLogo instanceof HTMLElement)) return;
+    if (!(homeLogo instanceof HTMLElement)) return;
+
+  /* =====================================================
+     이미 이번 세션에서 재생했다면 바로 Home 표시
+     ===================================================== */
+
+  if (hasPlayedIntro()) {
+    loader.remove();
+    return;
+  }
+
+
+  /*
+   * 이번 탭에서는 인트로를 재생했다는 것을 기록.
+   *
+   * 시작할 때 기록하는 이유:
+   * 인트로 도중 F5를 눌러도 처음부터 다시 재생되지 않게 하기 위함.
+   */
+  rememberIntro();
+
+    /* ---------------------------------------------------
+       0. INTRO 시작
+       --------------------------------------------------- */
+
+    document.documentElement.classList.add('intro-loading');
+
+    introStage?.classList.add('intro-stage--loading');
+
+    loader.classList.add('is-active');
+
+
+    /*
+     * 레이아웃 계산 후 Home 로고 위치 측정
+     */
+    await new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(resolve);
+      });
+    });
+
+    syncLoaderLogo();
+
+    window.addEventListener('resize', syncLoaderLogo);
+
+
+    /*
+     * reduced motion
+     */
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      window.removeEventListener('resize', syncLoaderLogo);
+
+      finishIntro();
+
+      return;
+    }
+
+
+    /* =====================================================
+       1. 아주 짧은 대기
+       약 0.12초
+       ===================================================== */
+
+    await wait(120);
+
+
+    /* =====================================================
+       2. LOADING BAR
+       약 0.85초
+       ===================================================== */
+
+    await fill.animate(
+      [
+        {
+          transform: 'scaleX(0)'
+        },
+        {
+          transform: 'scaleX(1)'
+        }
+      ],
+      {
+        duration: 850,
+        easing: 'cubic-bezier(.65, 0, .35, 1)',
+        fill: 'forwards'
+      }
+    ).finished;
+
+
+    /* =====================================================
+       3. IMPORTING ARCHIVE + BAR
+          아래로 내려가면서 Fade Out
+       약 0.22초
+       ===================================================== */
+
+    await status.animate(
+      [
+        {
+          opacity: 1,
+          transform: 'translateY(0)'
+        },
+        {
+          opacity: 0,
+          transform: 'translateY(14px)'
+        }
+      ],
+      {
+        duration: 220,
+        easing: 'cubic-bezier(.4, 0, 1, 1)',
+        fill: 'forwards'
+      }
+    ).finished;
+
+
+    /* =====================================================
+       4. MAIN SVG LOGO 등장
+       약 0.36초
+       ===================================================== */
+
+    await loaderLogo.animate(
+      [
+        {
+          opacity: 0,
+          transform: 'scale(.95)',
+          filter: 'blur(3px)'
+        },
+        {
+          opacity: 1,
+          transform: 'scale(1)',
+          filter: 'blur(0px)'
+        }
+      ],
+      {
+        duration: 360,
+        easing: 'cubic-bezier(.22, 1, .36, 1)',
+        fill: 'forwards'
+      }
+    ).finished;
+
+
+    /*
+     * 로고가 보이는 시간을 아주 짧게 확보
+     */
+    await wait(120);
+
+
+    /* =====================================================
+       5. BLACK CURTAIN 위로 이동
+       약 0.76초
+       ===================================================== */
+
+    await curtain.animate(
+      [
+        {
+          transform: 'translateY(0%)'
+        },
+        {
+          transform: 'translateY(-100%)'
+        }
+      ],
+      {
+        duration: 760,
+        easing: 'cubic-bezier(.76, 0, .24, 1)',
+        fill: 'forwards'
+      }
+    ).finished;
+
+
+    /* =====================================================
+       6. Loader Logo → 실제 Home Logo
+       ===================================================== */
+
+    introStage?.classList.remove('intro-stage--loading');
+
+    homeLogo.style.opacity = '1';
+
+    /*
+     * 같은 SVG / 같은 위치 / 같은 크기이므로
+     * 실제로는 로고가 그대로 남아있는 것처럼 보인다.
+     */
+    loaderLogo.style.opacity = '0';
+
+
+    await wait(30);
+
+
+    window.removeEventListener('resize', syncLoaderLogo);
+
+    finishIntro();
+  };
+
+
+  playIntro();
+</script>
