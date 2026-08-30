@@ -120,7 +120,7 @@ export const projects: Project[] = [
     ],
     roles: ['Concept', 'Motion Design', '3D Design', 'Editing'],
     tools: ['Adobe After Effects', 'Blender'],
-    videoUrl: 'https://vimeo.com/1215937969',
+    videoUrl: 'https://vimeo.com/1222504229',
     externalUrl: 'https://manbow.nothing.sh/event/event_teamprofile.cgi?event=149&team=99',
     credits: [
       '操リ人形ノ舞ニ意味ハ有ルカ — https://youtu.be/dculW9lq5Kc',
