@@ -42,16 +42,15 @@ const isHomePage =
       <slot />
     </main>
     {showFooter && <ContactFooter />}
-    <script is:inline>
-  /*
-   * Home에서만 스크롤 등장 애니메이션 활성화
-   */
-  if (document.body.classList.contains('page-home')) {
+<script is:inline>
+  const isHome = document.body.classList.contains('page-home');
+  const revealElements = document.querySelectorAll('.reveal');
+
+  if (isHome) {
+    // Home에서는 기존 스크롤 등장 효과 유지
     const reduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
-
-    const revealElements = document.querySelectorAll('.reveal');
 
     if (!reduceMotion && 'IntersectionObserver' in window) {
       const observer = new IntersectionObserver(
@@ -74,6 +73,11 @@ const isHomePage =
         element.classList.add('is-visible');
       });
     }
+  } else {
+    // Home 이외의 페이지에서는 모든 요소 즉시 표시
+    revealElements.forEach((element) => {
+      element.classList.add('is-visible');
+    });
   }
     </script>
   </body>

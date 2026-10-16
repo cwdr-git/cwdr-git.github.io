@@ -117,9 +117,25 @@ code {
 
 .skip-link:focus { transform: translateY(0); }
 
-.reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+/* 기본적으로 모든 페이지의 콘텐츠는 즉시 표시 */
+.reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
 
-.reveal.is-visible { opacity: 1; transform: none; }
+/* Home에서만 스크롤 등장 애니메이션 적용 */
+.page-home .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+
+/* Home에서 화면에 들어온 콘텐츠 표시 */
+.page-home .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
 
 .eyebrow {
   margin: 0 0 18px;
