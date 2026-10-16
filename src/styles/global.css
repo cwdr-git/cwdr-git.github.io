@@ -1631,3 +1631,92 @@ html.intro-loading body {
     transition: none !important;
   }
 }
+/* =========================================================
+   MOBILE ABOUT PREVIEW
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .about-preview {
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1.1fr)
+      minmax(0, 0.9fr);
+
+    grid-template-areas:
+      "copy copy"
+      "facts image";
+
+    column-gap: 16px;
+    row-gap: clamp(48px, 10vw, 80px);
+
+    align-items: start;
+  }
+
+  /* 상단 Profile. + 소개글 */
+  .about-copy {
+    grid-area: copy;
+    min-width: 0;
+  }
+
+  /* 왼쪽 프로필 정보 */
+  .about-facts {
+    grid-area: facts;
+    grid-column: auto;
+
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .about-facts > div {
+    display: grid;
+
+    grid-template-columns: 55px minmax(0, 1fr);
+    gap: 8px;
+
+    padding: 12px 0;
+    align-items: start;
+  }
+
+  .about-facts dt {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .about-facts dd {
+    margin: 0;
+
+    font-size: 11px;
+    line-height: 1.5;
+
+    overflow-wrap: break-word;
+  }
+
+  /* 오른쪽 정사각형 프로필 이미지 */
+  .about-image {
+    grid-area: image;
+
+    width: 100%;
+    max-width: none;
+
+    aspect-ratio: 1 / 1;
+
+    justify-self: stretch;
+    align-self: start;
+
+    overflow: hidden;
+  }
+
+  .about-image img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    aspect-ratio: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+}
