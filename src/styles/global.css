@@ -1631,6 +1631,7 @@ html.intro-loading body {
     transition: none !important;
   }
 }
+
 /* =========================================================
    MOBILE ABOUT PREVIEW
    ========================================================= */
@@ -1641,20 +1642,20 @@ html.intro-loading body {
     display: grid;
 
     grid-template-columns:
-      minmax(0, 1.1fr)
-      minmax(0, 0.9fr);
+      minmax(0, 1.5fr)
+      minmax(0, 0.85fr);
 
     grid-template-areas:
       "copy copy"
       "facts image";
 
-    column-gap: 16px;
-    row-gap: clamp(48px, 10vw, 80px);
+    column-gap: 12px;
+    row-gap: clamp(36px, 8vw, 56px);
 
     align-items: start;
   }
 
-  /* 상단 Profile. + 소개글 */
+  /* Profile 제목 및 소개글 */
   .about-copy {
     grid-area: copy;
     min-width: 0;
@@ -1665,36 +1666,39 @@ html.intro-loading body {
     grid-area: facts;
     grid-column: auto;
 
-    min-width: 0;
     width: 100%;
+    min-width: 0;
     margin: 0;
   }
 
   .about-facts > div {
     display: grid;
 
-    grid-template-columns: 55px minmax(0, 1fr);
-    gap: 8px;
+    grid-template-columns: 43px minmax(0, 1fr);
+    gap: 7px;
 
-    padding: 12px 0;
+    padding: 10px 0;
+
     align-items: start;
   }
 
   .about-facts dt {
+    color: var(--muted);
     font-size: 10px;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .about-facts dd {
     margin: 0;
 
-    font-size: 11px;
-    line-height: 1.5;
+    font-size: clamp(10px, 2.8vw, 12px);
+    font-weight: 500;
+    line-height: 1.45;
 
     overflow-wrap: break-word;
   }
 
-  /* 오른쪽 정사각형 프로필 이미지 */
+  /* 오른쪽 프로필 사진 */
   .about-image {
     grid-area: image;
 
@@ -1704,7 +1708,7 @@ html.intro-loading body {
     aspect-ratio: 1 / 1;
 
     justify-self: stretch;
-    align-self: start;
+    align-self: center;
 
     overflow: hidden;
   }
