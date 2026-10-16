@@ -1340,7 +1340,12 @@ body.drawer-open .site-drawer {
   }
 
   .home-works-showcase__eyebrow::before {
-    display: none;
+    display: inline-block;
+    width: 14px;
+    height: 1px;
+    margin-right: 7px;
+    vertical-align: middle;
+    background: currentColor;
   }
 
   .home-works-showcase__links .text-link {
@@ -1642,72 +1647,62 @@ html.intro-loading body {
     display: grid;
 
     grid-template-columns:
-      minmax(0, 1.5fr)
+      minmax(0, 1fr)
       minmax(0, 0.85fr);
 
     grid-template-areas:
-      "copy copy"
-      "facts image";
+      "label label"
+      "heading image"
+      "description description"
+      "link link"
+      "facts facts";
 
-    column-gap: 12px;
-    row-gap: clamp(36px, 8vw, 56px);
+    column-gap: 16px;
+    row-gap: 0;
 
-    align-items: start;
+    align-items: center;
   }
 
-  /* Profile 제목 및 소개글 */
+  /* 기존 About Copy 내부 요소를 개별 Grid 영역으로 분리 */
   .about-copy {
-    grid-area: copy;
-    min-width: 0;
+    display: contents;
   }
 
-  /* 왼쪽 프로필 정보 */
-  .about-facts {
-    grid-area: facts;
-    grid-column: auto;
+  /* ABOUT / EXPERIENCE */
+  .about-copy > .eyebrow {
+    grid-area: label;
 
-    width: 100%;
-    min-width: 0;
-    margin: 0;
+    margin: 0 0 26px;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    line-height: 1.3;
   }
 
-  .about-facts > div {
-    display: grid;
+  /* Profile. */
+  .about-copy > h2 {
+    grid-area: heading;
 
-    grid-template-columns: 43px minmax(0, 1fr);
-    gap: 7px;
-
-    padding: 10px 0;
-
-    align-items: start;
-  }
-
-  .about-facts dt {
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.45;
-  }
-
-  .about-facts dd {
     margin: 0;
 
-    font-size: clamp(10px, 2.8vw, 12px);
-    font-weight: 500;
-    line-height: 1.45;
+    font-size: clamp(34px, 10vw, 50px);
+    line-height: 1;
+    letter-spacing: -0.045em;
 
-    overflow-wrap: break-word;
+    align-self: center;
   }
 
-  /* 오른쪽 프로필 사진 */
+  /* Profile 오른쪽 사진 */
   .about-image {
     grid-area: image;
 
     width: 100%;
-    max-width: none;
+    max-width: 180px;
 
     aspect-ratio: 1 / 1;
 
-    justify-self: stretch;
+    justify-self: end;
     align-self: center;
 
     overflow: hidden;
@@ -1720,7 +1715,67 @@ html.intro-loading body {
     height: 100%;
 
     aspect-ratio: auto;
+
     object-fit: cover;
     object-position: center;
+  }
+
+  /* I create Promotional... */
+  .about-copy > p:not(.eyebrow) {
+    grid-area: description;
+
+    margin: 26px 0 0;
+    max-width: 100%;
+
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* View Experience */
+  .about-copy > a {
+    grid-area: link;
+
+    justify-self: start;
+
+    margin-top: 22px;
+
+    width: fit-content;
+  }
+
+  /* 프로필 정보 - 원래 간격 복원 */
+  .about-facts {
+    grid-area: facts;
+    grid-column: 1 / -1;
+
+    width: 100%;
+    min-width: 0;
+
+    margin: 56px 0 0;
+  }
+
+  .about-facts > div {
+    display: grid;
+
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 24px;
+
+    padding: 16px 0;
+
+    align-items: start;
+  }
+
+  .about-facts dt {
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .about-facts dd {
+    margin: 0;
+
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.65;
+
+    overflow-wrap: normal;
   }
 }
