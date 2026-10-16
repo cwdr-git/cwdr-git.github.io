@@ -1729,6 +1729,11 @@ html.intro-loading body {
 
   .about-page { grid-template-columns: 1fr; padding-top: 0; }
 
+  /* 모바일 About 페이지의 불필요한 구분선 제거 */
+.page-intro:has(+ .about-page) {
+  border-bottom: none;
+}
+
   .skills { grid-template-columns: 1fr; }
 
   .experience-item { grid-template-columns: 1fr; gap: 8px; }
