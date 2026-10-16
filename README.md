@@ -88,3 +88,11 @@ public/images/projects/new-project.webp
   --max: 1380px;
 }
 ```
+
+## 수정사항 반영
+
+```css
+git add .
+git commit -m "변경 사항 입력"
+git push origin main
+```
