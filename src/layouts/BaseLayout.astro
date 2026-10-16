@@ -2,7 +2,7 @@
 import Header from '../components/Header.astro';
 import ContactFooter from '../components/ContactFooter.astro';
 import '../styles/global.css';
-import { assetPath } from '../lib/paths';
+import { assetPath, withBase } from '../lib/paths';
 import { site } from '../data/portfolioData';
 
 interface Props {
@@ -15,6 +15,11 @@ const {
   description = site.intro,
   showFooter = true
 } = Astro.props;
+const normalizePath = (path: string) =>
+  path.replace(/\/+$/, '') || '/';
+
+const isHomePage =
+  normalizePath(Astro.url.pathname) === normalizePath(withBase('/'));
 ---
 <!doctype html>
 <html lang="ko">
@@ -30,7 +35,7 @@ const {
     <meta property="og:image" content={assetPath('/images/og-image.jpg')} />
     <title>{title}</title>
   </head>
-  <body>
+  <body class:list={{ 'page-home': isHomePage }}>
     <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
     <Header />
     <main id="main-content">
@@ -38,20 +43,38 @@ const {
     </main>
     {showFooter && <ContactFooter />}
     <script is:inline>
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!reduceMotion && 'IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
+  /*
+   * Home에서만 스크롤 등장 애니메이션 활성화
+   */
+  if (document.body.classList.contains('page-home')) {
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const revealElements = document.querySelectorAll('.reveal');
+
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add('is-visible');
               observer.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.12 });
-        document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
-      } else {
-        document.querySelectorAll('.reveal').forEach((element) => element.classList.add('is-visible'));
-      }
+        },
+        { threshold: 0.12 }
+      );
+
+      revealElements.forEach((element) => {
+        observer.observe(element);
+      });
+    } else {
+      revealElements.forEach((element) => {
+        element.classList.add('is-visible');
+      });
+    }
+  }
     </script>
   </body>
 </html>
