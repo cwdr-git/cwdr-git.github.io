@@ -113,7 +113,7 @@ export const projects: Project[] = [
     category: 'BGA / PV',
     thumbnail: '/images/projects/bof22.png',
     featured: true,
-    summary: 'BOF:22 [THE BMS OF FIGHTERS 22 - GO 2 YOUR EVOLUTION -]',
+    summary: 'BOF:22',
     overview: [
       '음악 게임 BGA 제작에 도전하기 위해 “BOF22”에 제출한 세 작품입니다.',
       '프로젝트 내부 인원들의 노래를 받아 각 곡에 맞는 영상을 제작했으며, 각 곡이 주는 이미지를 영상으로 표현하기 위한 구상과 작업을 담당했습니다.'
@@ -136,7 +136,7 @@ export const projects: Project[] = [
     category: 'BGA / PV',
     thumbnail: '/images/projects/bof21.png',
     featured: false,
-    summary: 'THE BMS OF FIGHTERS 21 -GO BACK 2 YOUR ROOTS-',
+    summary: 'BOF21',
     overview: [
       '음악 게임 BGA 제작에 도전하기 위해 “BOF21”에 제출한 세 작품입니다.',
       '프로젝트 내부 인원들의 노래를 받아 각 곡에 맞는 영상을 제작했으며, 각 곡이 주는 이미지를 영상으로 표현하기 위한 구상과 작업을 담당했습니다.'
