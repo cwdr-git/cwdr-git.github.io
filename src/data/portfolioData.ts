@@ -107,7 +107,7 @@ export const experience = [
 export const projects: Project[] = [
   {
     slug: 'bof22-bga-collection',
-    title: 'BOF22 - BGA Works',
+    title: 'BOF:22 - BGA Works',
     subtitle: 'Sunlit Scenery · WiNGS of CHRONiXiA · 記憶の花束',
     year: '2026',
     category: 'BGA / PV',
