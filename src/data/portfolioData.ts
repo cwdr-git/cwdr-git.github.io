@@ -135,7 +135,7 @@ export const projects: Project[] = [
     year: '2025',
     category: 'BGA / PV',
     thumbnail: '/images/projects/bof21.png',
-    featured: false,
+    featured: true,
     summary: 'BOF21 -G2R-',
     overview: [
       '음악 게임 BGA 제작에 도전하기 위해 “BOF21”에 제출한 세 작품입니다.',
