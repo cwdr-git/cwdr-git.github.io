@@ -106,13 +106,36 @@ export const experience = [
 
 export const projects: Project[] = [
   {
+    slug: 'bof22-bga-collection',
+    title: 'BOF22 - BGA Works',
+    subtitle: 'Sunlit Scenery · WiNGS of CHRONiXiA · 記憶の花束',
+    year: '2026',
+    category: 'BGA / PV',
+    thumbnail: '/images/projects/bof22.png',
+    featured: true,
+    summary: 'BOF:22 [THE BMS OF FIGHTERS 22 - GO 2 YOUR EVOLUTION -]',
+    overview: [
+      '음악 게임 BGA 제작에 도전하기 위해 “BOF22”에 제출한 세 작품입니다.',
+      '프로젝트 내부 인원들의 노래를 받아 각 곡에 맞는 영상을 제작했으며, 각 곡이 주는 이미지를 영상으로 표현하기 위한 구상과 작업을 담당했습니다.'
+    ],
+    roles: ['Concept', 'Motion Design', '3D Design', 'Editing'],
+    tools: ['Adobe After Effects', 'Blender'],
+    videoUrl: 'https://vimeo.com/1232552599',
+    externalUrl: 'https://manbow.nothing.sh/event/event.cgi?action=More_def&num=140&event=152',
+    credits: [
+      'Sunlit Scenery — https://youtu.be/CdacHEMWlWs',
+      'WiNGS of CHRONiXiA — https://youtu.be/lVWOGub4jSI',
+      '記憶の花束 — https://youtu.be/gQCYUs6TyDk'
+    ]
+  },
+  {
     slug: 'bof21-bga-collection',
     title: 'BOF21 - Team "デジタルの窓" BGA Works',
     subtitle: '操リ人形ノ舞ニ意味ハ有ルカ · Awakening Pulse · Sudden Encounter',
     year: '2025',
     category: 'BGA / PV',
     thumbnail: '/images/projects/bof21.png',
-    featured: true,
+    featured: false,
     summary: 'THE BMS OF FIGHTERS 21 -GO BACK 2 YOUR ROOTS-',
     overview: [
       '음악 게임 BGA 제작에 도전하기 위해 “BOF21”에 제출한 세 작품입니다.',
