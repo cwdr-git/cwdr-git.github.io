@@ -32,7 +32,7 @@ export interface Project {
 export const site = {
   brand: '斗湖',
   brandMark: '斗湖',
-  brandName: 'CROWNSHREDDER',
+  brandName: 'CWDR',
 
   personName: '김두호',
   role: 'Motion Designer',

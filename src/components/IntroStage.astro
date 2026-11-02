@@ -1,4 +1,5 @@
 ---
+import cwdrLogoUrl from '../assets/cwdr-logo.svg?url';
 import { site } from '../data/portfolioData';
 import { assetPath } from '../lib/paths';
 import introLogoUrl from '../assets/intro-logo.svg?url';
@@ -49,7 +50,14 @@ const markerPositions = [
 
   <div class="intro-stage__brand-block">
     <p>{site.introKicker}</p>
-    <strong>{site.brandName}</strong>
+
+    <img
+      class="intro-stage__wordmark"
+      src={cwdrLogoUrl}
+      alt="CWDR"
+      width="1906"
+      height="238"
+    />
   </div>
 
   <p class="intro-stage__tools">{site.introTools}</p>
