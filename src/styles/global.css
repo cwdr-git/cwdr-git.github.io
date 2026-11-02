@@ -1789,6 +1789,13 @@ html.intro-loading body {
   /* Keep the established mobile position; inherit the compact layout. */
   .intro-stage__brand-block { bottom: 20px; }
 
+  /* 모바일 인트로 CWDR 로고 크기 */
+  .intro-stage__wordmark {
+  width: min(51vw, 218px);
+  max-width: 100%;
+  height: auto;
+  }
+
   .intro-stage__tools { right: var(--gutter); bottom: 32px; font-size: 8px; }
 
   .intro-stage__brand-block p { font-size: 8px; }
